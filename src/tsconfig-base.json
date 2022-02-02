@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "allowJs": true,
+      "target": "ES2019",
+      "lib": [
+        "ES2019"
+      ],
+      "types": ["node"],
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "strict": true   
+    }
+  }
+  
