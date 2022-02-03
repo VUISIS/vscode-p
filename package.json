@@ -1,57 +1,87 @@
 {
-    "name": "vscode-p",
-    "displayName": "vscode-p",
-    "description": "",
-    "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.63.0"
-    },
-    "categories": [
-        "Programming Languages"
-    ],
-    "activationEvents": [
-        "onLanguage:p"
-    ],
-    "main": "./out/extension/extension.js",
-    "contributes": {
-        "languages": [
-            {
-                "id": "p",
-                "aliases": [
-                    "P",
-                    "p"
-                ],
-                "extensions": [
-                    ".p"
-                ],
-                "configuration": "./language-configuration.json"
-            }
-        ],
-        "grammars": [
-            {
-                "language": "p",
-                "scopeName": "program",
-                "path": "./syntaxes/p.tmLanguage.json"
-            }
-        ]
-    },
-    "scripts": {
-        "compile": "npm run compile:extension",
-        "compile:extension": "tsc -b",
-        "antlr4ts": "antlr4ts -visitor -no-listener parser/PLexer.g4 && antlr4ts -visitor -no-listener parser/PParser.g4"
-    },
-    "dependencies": {
-        "antlr4-c3": "^2.2.1",
-        "antlr4ts": "^0.5.0-alpha.4"
-    },
-    "devDependencies": {
-        "@types/node": "^17.0.14",
-        "@types/vscode": "^1.63.2",
-        "antlr4-c3": "^2.2.1",
-        "antlr4ts": "^0.5.0-alpha.4",
-        "antlr4ts-cli": "^0.5.0-alpha.4",
-        "path": "^0.12.7",
-        "ts-loader": "^9.2.6",
-        "typescript": "^4.5.5"
-    }
+	"name": "p-lsp",
+	"description": "A language server for P",
+	"author": "Vanderbilt ISIS",
+	"license": "MIT",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"publisher": "VUISIS",
+	"categories": [
+		"Programming Languages"
+	],
+	"keywords": [
+		"multi-root ready"
+	],
+	"engines": {
+		"vscode": "^1.43.0"
+	},
+	"activationEvents": [
+		"onLanguage:p"
+	],
+	"main": "./client/out/extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "P LSP configuration",
+			"properties": {
+				"languageServerExample.maxNumberOfProblems": {
+					"scope": "resource",
+					"type": "number",
+					"default": 100,
+					"description": "Controls the maximum number of problems produced by the server."
+				},
+				"languageServerExample.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "off",
+					"description": "Traces the communication between VS Code and the language server."
+				}
+			}
+		},
+		"languages": [
+			{
+				"id": "p",
+				"aliases": [
+					"P",
+					"p"
+				],
+				"extensions": [
+					".p"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "p",
+				"scopeName": "program",
+				"path": "./syntaxes/p.tmLanguage.json"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"test": "sh ./scripts/e2e.sh"
+	},
+	"devDependencies": {
+		"@types/node": "^12.12.0",
+		"@types/mocha": "^8.2.2",
+		"@typescript-eslint/eslint-plugin": "^4.23.0",
+		"@typescript-eslint/parser": "^4.23.0",
+		"eslint": "^7.26.0",
+		"mocha": "^8.3.2",
+		"typescript": "^4.4.3"
+	}
 }

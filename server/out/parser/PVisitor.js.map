@@ -1,0 +1,1 @@
+{"version":3,"file":"PVisitor.js","sourceRoot":"","sources":["../../src/parser/PVisitor.ts"],"names":[],"mappings":";;;AAEA,qFAAkF;AAGlF,MAAa,QAAS,SAAQ,mDAAgC;IAE1D,aAAa;QAET,OAAO,CAAC,CAAC;IACb,CAAC;IAED,gBAAgB,CAAC,GAAuB;QAEpC,OAAO,KAAK,CAAC,aAAa,CAAC,GAAG,CAAC,CAAC;IACpC,CAAC;CACJ;AAXD,4BAWC"}
