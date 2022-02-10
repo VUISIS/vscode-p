@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import { PParserVisitor } from "./PParserVisitor";
 import { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor";
 import { MachineBodyContext } from './PParser';

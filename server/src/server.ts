@@ -14,7 +14,8 @@ import {
 	CompletionItemKind,
 	TextDocumentPositionParams,
 	TextDocumentSyncKind,
-	InitializeResult
+	InitializeResult,
+	createServerPipeTransport
 } from 'vscode-languageserver/node';
 
 import {
@@ -27,6 +28,8 @@ import { PLexer } from './parser/PLexer';
 import { PParser } from './parser/PParser';
 import { PVisitor } from './parser/PVisitor';
 import { ErrorListener } from './parser/ErrorListener';
+import {CodeCompletionCore, ScopedSymbol, SymbolTable, VariableSymbol} from "antlr4-c3";
+import { count } from 'console';
 
 const connection = createConnection(ProposedFeatures.all);
 
@@ -81,6 +84,7 @@ documents.onDidChangeContent(change => {
 });
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
+
 	const text = textDocument.getText();
 	let inputStream = CharStreams.fromString(text);
 	let lexer = new PLexer(inputStream);
@@ -88,12 +92,11 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 	let parser = new PParser(tokenStream);
 	parser.buildParseTree = true;
 	let visitor = new PVisitor();
-	let el = new ErrorListener();
-	parser.addErrorListener(el);
+	
 	let tree = parser.program();
 	visitor.visit(tree);
 
-	const diagnostics: Diagnostic[] = [];
+	/*const diagnostics: Diagnostic[] = [];
 	let items = el.getErrorItems();
 	for(var item of items)
 	{
@@ -101,33 +104,22 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 		{
 			severity: DiagnosticSeverity.Error,
 			range: {
-				start: textDocument.positionAt(item.symbol.start),
-				end: textDocument.positionAt(item.symbol.stop+1)
+				start: textDocument.positionAt(item[1].start),
+				end: textDocument.positionAt(item[1].stop+1)
 			},
-			message: item.msg,
+			message: item[0],
 			source: 'p'
 		};
 
 		diagnostics.push(diagnostic);
-	}
+	}*/
 
 	connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
 connection.onCompletion(
 	(_textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
-		return [
-			{
-				label: 'TypeScript',
-				kind: CompletionItemKind.Text,
-				data: 1
-			},
-			{
-				label: 'JavaScript',
-				kind: CompletionItemKind.Text,
-				data: 2
-			}
-		];
+		return [{label:'', kind: CompletionItemKind.Text, data: 0}];
 	}
 );
 

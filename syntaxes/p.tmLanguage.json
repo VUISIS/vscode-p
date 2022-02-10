@@ -1,31 +1,87 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "ex",
+	"name": "p",
 	"patterns": [
 		{
 			"include": "#keywords"
 		},
 		{
 			"include": "#strings"
+		},
+		{
+			"include": "#support"
+		},
+		{
+			"include": "#meta"
+		},
+		{
+			"include": "#constant"
 		}
 	],
 	"repository": {
 		"keywords": {
 			"patterns": [{
-				"name": "keyword.control.ex",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
+				"name": "keyword.control",
+				"match": "\\b(if|while|for|return|announce|as|assert|assume|break|case|cold|continue|default|defer|do|else|entry|exit|format|fun|goto|group|halt|hot|if|ignore|in|keys|new|observes|on|print|raise|receive|return|send|sizeof|spec|start|state|this|type|values|var|with|choose)\\b"
+			},
+			{
+				"match": "\\b(\\-|\\+|\\*|%|\\b/\\b|\\b / \\b|\\b /\\b|\\b/ \\b)\\b",
+				"name": "keyword.operator.arithmetic"
+			},
+			{
+				"match": "\\b(->|=|\\:|\\+=|==)\\b",
+				"name": "keyword.operator.assignment"
+			},
+			{
+				"match": "\\b(!|==|!=|\\|\\||&&)\\b",
+				"name": "keyword.operator.comparison"
+			},
+			{
+				"match": "\\b(<=|>=|<|>)\\b",
+				"name": "keyword.operator.relational"
+			},
+			{
+				"match": "\\b(\\$\\$|\\$)\\b",
+				"name": "keyword.other.unit"
+			}
+		]
 		},
 		"strings": {
-			"name": "string.quoted.double.ex",
+			"name": "string.quoted.double",
 			"begin": "\"",
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.ex",
+					"name": "constant.character.escape",
 					"match": "\\\\."
 				}
 			]
+		},
+		"support": {
+			"patterns": [{
+				"name": "support.type",
+				"match": "\\b(any|bool|enum|event|eventset|float|int|machine|interface|map|set|string|seq|data)\\b"
+			},
+			{
+				"name": "support.class",
+				"match": "\\b(module|implementation|test|refines)\\b"
+			}]
+		},
+		"meta": {
+			"patterns": [{
+				"name": "meta.type.name",
+				"match": "\\b(compose|union|hidee|hidei|rename|safe|main)\\b"
+			},
+			{
+				"name": "meta.type.annotation",
+				"match": "\\b(receives|sends|creates|to)\\b"
+			}]
+		},
+		"constant": {
+			"patterns": [{
+				"name": "constant.other",
+				"match": "\\b(true|false|null)\\b"
+			}]
 		}
 	},
 	"scopeName": "program"
