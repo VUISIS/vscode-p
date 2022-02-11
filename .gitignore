@@ -108,3 +108,4 @@ server/node_modules
 node_modules
 client/out/**
 client/node_modules
+server/src/parser/.antlr/

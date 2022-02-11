@@ -83,6 +83,10 @@ documents.onDidChangeContent(change => {
 	validateTextDocument(change.document);
 });
 
+documents.onDidSave(change => {
+	validateTextDocument(change.document);
+});
+
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
 	const text = textDocument.getText();
@@ -112,9 +116,9 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 		};
 
 		diagnostics.push(diagnostic);
-	}*/
+	}
 
-	connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+	connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });*/
 }
 
 connection.onCompletion(

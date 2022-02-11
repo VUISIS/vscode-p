@@ -1,0 +1,63 @@
+{
+    "Machine": {
+        "prefix": "machine",
+        "body":[
+            "machine ${1:name}", 
+            "send ${2:events}",
+            "receive ${3:events};",
+            "{",
+            "}"            
+        ],
+        "description": "Declare Machine"
+    },
+    "State": {
+        "prefix": "state",
+        "body":[
+            "state ${1:name}", 
+            "{",
+            "}"            
+        ],
+        "description": "Declare State"
+    },
+    "StateEntry": {
+        "prefix": "entry",
+        "body":[
+            "entry (${1:arg}: ${2:type})", 
+            "{",
+            "}"            
+        ],
+        "description": "Declare State Entry"
+    },
+    "StateExit": {
+        "prefix": "exit",
+        "body":[
+            "exit", 
+            "{",
+            "}"            
+        ],
+        "description": "Declare State Exit"
+    },
+    "Function": {
+        "prefix": "fun",
+        "body":[
+            "fun ${1:name}(${2:arg}: ${3:type}) : (${4:return_arg}:${5:return_type})", 
+            "{",
+            "}"            
+        ],
+        "description": "Declare Function"
+    },
+    "Event": {
+        "prefix": "event",
+        "body":[
+            "event ${1:name} : ${2:payload};"
+        ],
+        "description": "Declare Event"
+    },
+    "OnEvent": {
+        "prefix": "on",
+        "body":[
+            "on ${1:event} goto ${2:state};"
+        ],
+        "description": "Declare OnEvent"
+    }
+}

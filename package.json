@@ -65,6 +65,12 @@
 				"scopeName": "program",
 				"path": "./syntaxes/p.tmLanguage.json"
 			}
+		],
+		"snippets": [
+			{
+			  "language": "p",
+			  "path": "./snippets/snippets.json"
+			}
 		]
 	},
 	"scripts": {
