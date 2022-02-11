@@ -3,8 +3,8 @@
         "prefix": "machine",
         "body":[
             "machine ${1:name}", 
-            "send ${2:events}",
-            "receive ${3:events};",
+            "sends ${2:events}",
+            "receives ${3:events};",
             "{",
             "}"            
         ],

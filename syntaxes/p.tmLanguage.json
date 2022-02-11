@@ -22,7 +22,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control",
-				"match": "\\b(if|while|for|return|announce|as|assert|assume|break|case|cold|continue|default|defer|do|else|entry|exit|format|fun|goto|group|halt|hot|if|ignore|in|keys|new|observes|on|print|raise|receive|return|send|sizeof|spec|start|state|this|type|values|var|with|choose)\\b"
+				"match": "\\b(if|while|for|return|announce|as|assert|assume|break|case|cold|continue|default|defer|do|else|entry|exit|format|fun|goto|group|halt|hot|if|ignore|in|keys|new|observes|on|print|raise|receive|receives|return|send|sends|sizeof|spec|start|state|this|type|values|var|with|choose)\\b"
 			},
 			{
 				"match": "\\b(\\-|\\+|\\*|%|\\b/\\b|\\b / \\b|\\b /\\b|\\b/ \\b)\\b",

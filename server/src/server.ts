@@ -86,20 +86,39 @@ documents.onDidChangeContent(change => {
 documents.onDidSave(change => {
 	validateTextDocument(change.document);
 });
+const possibleIdentifierPrefix = /[\w]$/;
+const lineSeparator = /\n|\r|\r\n/g;
+
+function findCursorTokenIndex(tokenStream: CommonTokenStream, line: number, column: number): number | undefined {
+	// NOTE: cursor position is 1-based, while token's charPositionInLine is 0-based
+	const cursorCol = column - 1;
+	for (let i = 0; i < tokenStream.size; i++) {
+	  const t = tokenStream.get(i);
+  
+	  const tokenStartCol = t.charPositionInLine;
+	  const tokenEndCol = tokenStartCol + (t.text as string).length;
+	  const tokenStartLine = t.line;
+	  const tokenEndLine =
+		t.type !== PLexer.Whitespace || !t.text ? tokenStartLine : tokenStartLine + (t.text.match(lineSeparator)?.length || 0);
+  
+	  // NOTE: tokenEndCol makes sense only of tokenStartLine === tokenEndLine
+	  if (tokenEndLine > line || (tokenStartLine === line && tokenEndCol > cursorCol)) {
+		if (
+		  i > 0 &&
+		  tokenStartLine === line &&
+		  tokenStartCol === cursorCol &&
+		  possibleIdentifierPrefix.test(tokenStream.get(i - 1).text as string)
+		) {
+		  return i - 1;
+		} else if (tokenStream.get(i).type === PLexer.Whitespace) {
+		  return i + 1;
+		} else return i;
+	  }
+	}
+	return undefined;
+  }
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-
-	const text = textDocument.getText();
-	let inputStream = CharStreams.fromString(text);
-	let lexer = new PLexer(inputStream);
-	let tokenStream = new CommonTokenStream(lexer);
-	let parser = new PParser(tokenStream);
-	parser.buildParseTree = true;
-	let visitor = new PVisitor();
-	
-	let tree = parser.program();
-	visitor.visit(tree);
-
 	/*const diagnostics: Diagnostic[] = [];
 	let items = el.getErrorItems();
 	for(var item of items)
@@ -123,6 +142,41 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
 connection.onCompletion(
 	(_textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
+		const text = _textDocumentPosition.textDocument.uri;
+		const document = documents.get(text);
+		
+		if(document)
+		{
+			let inputStream = CharStreams.fromString(document.getText());
+			let lexer = new PLexer(inputStream);
+			let tokenStream = new CommonTokenStream(lexer);
+			let parser = new PParser(tokenStream);
+			parser.buildParseTree = true;
+			let visitor = new PVisitor();
+			
+			let tree = parser.program();
+			visitor.visit(tree);
+			let el = new ErrorListener();
+			parser.removeErrorListeners();
+			parser.addErrorListener(el);
+
+			let tokenPos = findCursorTokenIndex(tokenStream, _textDocumentPosition.position.line, _textDocumentPosition.position.character);
+			let core = new CodeCompletionCore(parser);
+			let compl : any[] = [];
+			if(tokenPos)
+			{
+				let candidates = core.collectCandidates(tokenPos);
+				candidates.tokens.forEach((_, k) => {
+					const symbolicName = parser.vocabulary.getSymbolicName(k);
+					compl.push({
+						label: symbolicName?.toLocaleLowerCase(),
+						kind: CompletionItemKind.Keyword
+					});
+				});
+				return compl;
+			}
+		}
+		
 		return [{label:'', kind: CompletionItemKind.Text, data: 0}];
 	}
 );
